@@ -9,7 +9,7 @@ import { Layout as AntdLayout, Breadcrumb, Dropdown, Menu } from "antd";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 
 import styles from "./index.module.css";
 
@@ -45,62 +45,63 @@ const items2: MenuProps["items"] = [
 const ITEMS = [
   {
     // icon: React.createElement(icon),
-    label: "图书管理",
-    key: "book",
+    label: "Film Manage",
+    key: "film",
 
     children: [
-      { label: "图书列表", key: "/book" },
-      { label: "图书添加", key: "/book/add" },
+      { label: "Film List", key: "/film" },
+      { label: "Add Film", key: "/film/add" },
     ],
   },
   {
     // icon: React.createElement(icon),
-    label: "借阅管理",
+    label: "Borrow Manage",
     key: "borrow",
 
     children: [
-      { label: "借阅列表", key: "/borrow" },
-      { label: "借阅添加", key: "/borrow/add" },
+      { label: "Borrow List", key: "/borrow" },
+      { label: "Add Borrow", key: "/borrow/add" },
     ],
   },
   {
     // icon: React.createElement(icon),
-    label: "分类管理",
+    label: "Category Manage",
     key: "category",
 
     children: [
-      { label: "分类列表", key: "/category" },
-      { label: "分类添加", key: "/category/add" },
+      { label: "Category List", key: "/category" },
+      { label: "Add Category", key: "/category/add" },
     ],
   },
   {
     // icon: React.createElement(icon),
-    label: "用户管理",
+    label: "User Manage",
     key: "user",
 
     children: [
-      { label: "用户列表", key: "/user" },
-      { label: "用户添加", key: "/user/add" },
+      { label: "User List", key: "/user" },
+      { label: "Add User", key: "/user/add" },
     ],
   },
 ];
 
 const USER_ITEMS: MenuProps["items"] = [
   {
-    label: "用户中心",
+    label: "User Center",
     key: "1",
   },
   {
-    label: "登出",
+    label: "Logout",
     key: "2",
   },
 ];
 
-export function Layout({ children }) {
-  const router = useRouter();
-  const handleMenuClick = ({ key }) => {
-    router.push(key);
-  };
+// export function Layout({ children }: { children: ReactNode }) {
+  export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+    const router = useRouter();
+    const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
+      router.push(key);
+    };
   return (
     <>
       <Head>
@@ -112,19 +113,12 @@ export function Layout({ children }) {
       <main className={styles.main}>
         <AntdLayout>
           <Header className={styles.header}>
-            <Image
-              src="/logo.svg"
-              width={30}
-              height={30}
-              alt="logo"
-              className={styles.logo}
-            />
-            三木图书管理系统
+            Film online streaming system
             <span className={styles.user}>
               <Dropdown menu={{ items: USER_ITEMS }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    用户名
+                    UsaerName
                     <DownOutlined />
                   </Space>
                 </a>
@@ -135,8 +129,8 @@ export function Layout({ children }) {
             <Sider width={200}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={["/book"]}
-                defaultOpenKeys={["book"]}
+                defaultSelectedKeys={["/film"]}
+                defaultOpenKeys={["film"]}
                 style={{ height: "100%", borderRight: 0 }}
                 items={ITEMS}
                 onClick={handleMenuClick}
