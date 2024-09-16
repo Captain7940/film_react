@@ -118,7 +118,7 @@ const USER_ITEMS: MenuProps["items"] = [
               <Dropdown menu={{ items: USER_ITEMS }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    UsaerName
+                    UserName
                     <DownOutlined />
                   </Space>
                 </a>
