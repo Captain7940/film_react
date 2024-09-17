@@ -2,9 +2,10 @@ import { Button, Col, Image, Form, Input, Select, Space, Table, TablePaginationC
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from './index.module.css'
-import { getBookList } from "../api/book";
-import { BookQueryType } from "@/type/book";
+import { getFilmList } from "../../api/film";
+import { FilmQueryType } from "@/type/film";
 import dayjs from "dayjs";
+import Content from "@/components/Content";
 
 
 const COLUMNS = [
@@ -73,7 +74,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getBookList({ current: 1, pageSize: pagination.pageSize })
+      const res = await getFilmList({ current: 1, pageSize: pagination.pageSize })
       const { data } = res
       setData(data)
     }
@@ -81,8 +82,8 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
-  const handleSearchFinish = async (values: BookQueryType) => {
-    const res = await getBookList({ ...values, current: 1, pageSize: pagination.pageSize })
+  const handleSearchFinish = async (values: FilmQueryType) => {
+    const res = await getFilmList({ ...values, current: 1, pageSize: pagination.pageSize })
     setData(res.data)
     setPagination({ ...pagination, current: 1, total: res.total })
   }
@@ -91,14 +92,14 @@ export default function Home() {
     form.resetFields()
   }
 
-  const handleBookEdit = () => {
+  const handleFilmEdit = () => {
     router.push('/book/edit/id')
   }
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
     setPagination(pagination)
     const query = form.getFieldsValue()
-    getBookList({
+    getFilmList({
       current: pagination.current,
       pageSize: pagination.pageSize,
       ...query
@@ -109,14 +110,28 @@ export default function Home() {
     {
       title: 'Action', key: "action", render: (_: any, row: any) => {
         return <Space>
-          <Button type="link" onClick={handleBookEdit}> Edit</Button>
+          <Button type="link" onClick={handleFilmEdit}> Edit</Button>
           <Button type="link" danger>Delete</Button>
         </Space>
       }
     }
     ]
 
-  return <>  <Form
+  return (
+    <Content
+    title="Film List"
+    operation={
+      <Button
+        type="primary"
+        onClick={() => {
+          router.push("/film/add");
+        }}
+      >
+        Add
+      </Button>
+    }
+  >
+    <Form
     name="search"
     form={form}
     onFinish={handleSearchFinish}
@@ -173,5 +188,6 @@ export default function Home() {
      pagination={{ ...pagination, showTotal: () => `Total ${pagination.total} item` }}
      />
      </div>
-  </>;
+  </Content>
+  );
 }
