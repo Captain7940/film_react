@@ -43,23 +43,23 @@ export const CreateAxiosInstance = (
 
   instance.interceptors.response.use(
     function (response) {
-      // 是否已经登陆，是否成功
+      // Check login or not
       const { status, data, message } = response as any;
       if (status === 200) {
         return data;
       } else if (status === 401) {
-        // 没权限或者没登陆
+        // Not login
         return Router.push("/login");
       } else {
-        // 其他error
-        AntdMessage.error(message || "服务端异常");
+        // Other error
+        AntdMessage.error(message || "Server Error");
       }
     },
     function (error) {
       if (error.response && error.response.status === 401) {
         return Router.push("/login");
       }
-      AntdMessage.error(error?.response?.data?.message || "服务端异常");
+      AntdMessage.error(error?.response?.data?.message || "Server Error");
       return Promise.reject(error);
     }
   );

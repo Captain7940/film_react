@@ -1,22 +1,11 @@
-
-import {
-  Button,
-  DatePicker,
-  Form,
-  Image,
-  Input,
-  InputNumber,
-  Select,
-  message,
-} from "antd";
+import {Button, DatePicker, Form, Image, Input, InputNumber, Select, message,} from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-
 import styles from "./index.module.css";
-import { FilmType } from "@/type";
+import { CategoryType, FilmType } from "@/type";
 import { filmAdd } from "@/api/film";
 import Content from "@/components/Content";
-
+import { getCategoryList } from "@/api/category";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -24,20 +13,25 @@ const { TextArea } = Input;
 export default function FilmForm({ title }: { title: string }) {
   const [preview, setPreview] = useState("");
   const [form] = Form.useForm();
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const router = useRouter();
 
   const handleFinish = async (values: FilmType) => {
-    
     await filmAdd(values);
     message.success("Create Success");
     router.push("/film");
   };
 
+  useEffect(() => {
+    getCategoryList({ all: true }).then((res) => {
+      setCategoryList(res.data);
+    });
+  }, []);
+
   return (
     <Content title={title}>
       <Form
         form={form}
-        className={styles.form}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
         layout="horizontal"
@@ -49,7 +43,7 @@ export default function FilmForm({ title }: { title: string }) {
           rules={[
             {
               required: true,
-              message: "Enter Name",
+              message: "Please Enter Name",
             },
           ]}
         >
@@ -61,7 +55,7 @@ export default function FilmForm({ title }: { title: string }) {
           rules={[
             {
               required: true,
-              message: "Enter author",
+              message: "Please Enter Author",
             },
           ]}
         >
@@ -73,19 +67,23 @@ export default function FilmForm({ title }: { title: string }) {
           rules={[
             {
               required: true,
-              message: "Select category",
+              message: "Please Select Category",
             },
           ]}
         >
-          <Select placeholder="Please Select">
-            <Select.Option value="demo">Demo</Select.Option>
-          </Select>
+          <Select
+            placeholder="Please Select"
+            options={categoryList.map((item) => ({
+              label: item.name,
+              value: item._id,
+            }))}
+          ></Select>
         </Form.Item>
         <Form.Item label="Cover Page" name="cover">
           <Input.Group compact>
             <Input
               placeholder="Please Enter"
-              style={{ width: "calc(100% - 80px)" }}
+              style={{ width: "calc(100% - 63px)" }}
               onChange={(e) => {
                 form.setFieldValue("cover", e.target.value);
               }}

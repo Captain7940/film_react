@@ -1,11 +1,12 @@
-import { Button, Col, Image, Form, Input, Select, Space, Table, TablePaginationConfig, Tooltip, Row } from "antd";
+import { Button, Col, Image, Form, Input, Select, Space, Table, TablePaginationConfig, Tooltip, Row, message } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from './index.module.css'
-import { getFilmList } from "../../api/film";
+import { filmDelete, getFilmList } from "../../api/film";
 import { FilmQueryType } from "@/type/film";
-import dayjs from "dayjs";
 import Content from "@/components/Content";
+import { getCategoryList } from "@/api/category";
+import { CategoryType } from "@/type/category";
 
 
 const COLUMNS = [
@@ -52,19 +53,14 @@ const COLUMNS = [
       </Tooltip>
     }
   },
-  {
-    title: 'Created Time',
-    dataIndex: 'createdAt',
-    key: 'createdAt',
-    width: 130,
-    render: (text: string) => dayjs(text).format('YYYY-MM-DD')
-  },
+
 ];
 
 export default function Home() {
   const [form] = Form.useForm()
   const router = useRouter()
   const [data, setData] = useState([])
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 20,
@@ -72,15 +68,24 @@ export default function Home() {
     total: 0
   })
 
+  async function fetchData(search?: FilmQueryType) {
+    const res = await getFilmList({
+      current: pagination.current,
+      pageSize: pagination.pageSize,
+      ...search,
+    });
+    const { data } = res;
+    setData(data);
+    setPagination({ ...pagination, total: res.total });
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      const res = await getFilmList({ current: 1, pageSize: pagination.pageSize })
-      const { data } = res
-      setData(data)
-    }
-    fetchData()
+    fetchData();
+    getCategoryList({ all: true }).then((res) => {
+      setCategoryList(res.data);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
   
   const handleSearchFinish = async (values: FilmQueryType) => {
     const res = await getFilmList({ ...values, current: 1, pageSize: pagination.pageSize })
@@ -92,9 +97,9 @@ export default function Home() {
     form.resetFields()
   }
 
-  const handleFilmEdit = () => {
-    router.push('/book/edit/id')
-  }
+  const handleFilmEdit = (id: string) => {
+    router.push(`/film/edit/${id}`);
+  };
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
     setPagination(pagination)
@@ -106,14 +111,39 @@ export default function Home() {
     })
   }
 
+  const handleFilmDelete = async (id: string) => {
+    await filmDelete(id);
+    message.success("Successfully Delete");
+    fetchData(form.getFieldsValue());
+  };
+
   const columns = [...COLUMNS,
     {
-      title: 'Action', key: "action", render: (_: any, row: any) => {
-        return <Space>
-          <Button type="link" onClick={handleFilmEdit}> Edit</Button>
-          <Button type="link" danger>Delete</Button>
-        </Space>
-      }
+      title: "Action",
+      key: "action",
+      render: (_: any, row: any) => {
+        return (
+          <Space>
+            <Button
+              type="link"
+              onClick={() => {
+                handleFilmEdit(row._id);
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              type="link"
+              danger
+              onClick={() => {
+                handleFilmDelete(row._id);
+              }}
+            >
+              Delete
+            </Button>
+          </Space>
+        );
+      },
     }
     ]
 
@@ -136,7 +166,9 @@ export default function Home() {
     form={form}
     onFinish={handleSearchFinish}
     initialValues={{
-      name: '', author: '', category: ''
+      name: "",
+      author: "",
+      category: "",
     }}
   >
     <Row gutter={24}>
@@ -156,12 +188,11 @@ export default function Home() {
             allowClear
             showSearch
             placeholder="Please Select"
-            options={[
-              { value: 'jack', label: 'Jack' },
-              { value: 'lucy', label: 'Lucy' },
-              { value: 'Yiminghe', label: 'yiminghe' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]} />
+            options={categoryList.map((item) => ({
+              label: item.name,
+              value: item._id,
+            }))}
+          />
         </Form.Item>
       </Col>
       <Col span={9}>

@@ -21,3 +21,7 @@ export async function getFilmList(params?: FilmQueryType) {
 export async function filmAdd(params: FilmType) {
   return request.post("/api/books", params);
 }
+
+export async function filmDelete(id: string) {
+  return request.delete(`/api/books/${id}`);
+}
