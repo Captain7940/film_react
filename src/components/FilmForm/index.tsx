@@ -1,22 +1,36 @@
-import {Button, DatePicker, Form, Image, Input, InputNumber, Select, message,} from "antd";
+import {Button, Form, Image, Input, InputNumber, Select, message,} from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { CategoryType, FilmType } from "@/type";
-import { filmAdd } from "@/api/film";
+import { filmAdd, filmUpdate } from "@/api/film";
 import Content from "@/components/Content";
 import { getCategoryList } from "@/api/category";
 
-const { RangePicker } = DatePicker;
+
 const { TextArea } = Input;
 
-export default function FilmForm({ title }: { title: string }) {
+export default function FilmForm({ title, data }: { title: string ,data: FilmType}) {
   const [preview, setPreview] = useState("");
   const [form] = Form.useForm();
   const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const router = useRouter();
 
+  useEffect(() => {
+    if (data?._id) {
+      
+      form.setFieldsValue(data);
+    }
+  }, [data, form]);
+
   const handleFinish = async (values: FilmType) => {
+    if (data?._id) {
+      await filmUpdate(data._id, values);
+      message.success("Edit Success");
+    } else {
+      await filmAdd(values);
+      message.success("Successfully Create");
+    }
     await filmAdd(values);
     message.success("Create Success");
     router.push("/film");
@@ -114,7 +128,7 @@ export default function FilmForm({ title }: { title: string }) {
             htmlType="submit"
             className={styles.btn}
           >
-            Create
+            {data?._id ? "Update" : "Create"}
           </Button>
         </Form.Item>
       </Form>

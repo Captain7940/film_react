@@ -25,3 +25,11 @@ export async function filmAdd(params: FilmType) {
 export async function filmDelete(id: string) {
   return request.delete(`/api/films/${id}`);
 }
+
+export const getFilmDetail = (id: string) => {
+  return request.get(`/api/films/${id}`);
+};
+
+export const filmUpdate = (id: string, params: FilmType) => {
+  return request.put(`/api/films/${id}`, params);
+};
