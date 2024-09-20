@@ -4,12 +4,14 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { DownOutlined } from "@ant-design/icons";
-import { MenuProps, Space } from "antd";
+import { MenuProps, message, Space } from "antd";
 import { Layout as AntdLayout, Breadcrumb, Dropdown, Menu } from "antd";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import React, { PropsWithChildren } from "react";
 import styles from "./index.module.css";
+import Link from "next/link";
+import { logout } from "@/api/user";
 
 const { Header, Content, Sider } = AntdLayout;
 
@@ -58,11 +60,21 @@ const ITEMS = [
 
 const USER_ITEMS: MenuProps["items"] = [
   {
-    label: "User Center",
+    label: <Link href="/user/edit/id">User Center</Link>,
     key: "1",
   },
   {
-    label: "Logout",
+    label: (
+      <span
+        onClick={async () => {
+          await logout();
+          message.success("Successfully Logout");
+          router.push("/login");
+        }}
+      >
+        Logout
+      </span>
+    ),
     key: "2",
   },
 ];
@@ -74,11 +86,7 @@ const USER_ITEMS: MenuProps["items"] = [
       router.push(key);
     };
 
-  console.log(
-    "%c [ router ]-80",
-    "font-size:13px; background:pink; color:#bf2c9f;",
-    router
-  );
+
   const activeMenu = router.pathname;
  
 

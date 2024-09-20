@@ -4,6 +4,7 @@ export interface FilmQueryType {
   category?: number;
   current?: number;
   pageSize?: number;
+  all?: boolean;
 }
 
 export interface FilmType {
@@ -12,4 +13,5 @@ export interface FilmType {
   category: string;
   cover: string;
   description: string;
+  _id?: string;
 }

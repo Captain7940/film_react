@@ -15,13 +15,13 @@ export async function getFilmList(params?: FilmQueryType) {
 
 
 export async function getFilmList(params?: FilmQueryType) {
-  return request.get(`/api/books?${qs.stringify(params)}`);
+  return request.get(`/api/films?${qs.stringify(params)}`);
 }
 
 export async function filmAdd(params: FilmType) {
-  return request.post("/api/books", params);
+  return request.post("/api/films", params);
 }
 
 export async function filmDelete(id: string) {
-  return request.delete(`/api/books/${id}`);
+  return request.delete(`/api/films/${id}`);
 }

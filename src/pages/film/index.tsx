@@ -56,7 +56,7 @@ const COLUMNS = [
 
 ];
 
-export default function Home() {
+export default function Film() {
   const [form] = Form.useForm()
   const router = useRouter()
   const [data, setData] = useState([])
@@ -101,14 +101,15 @@ export default function Home() {
     router.push(`/film/edit/${id}`);
   };
 
-  const handleTableChange = (pagination: TablePaginationConfig) => {
+  const handleTableChange = async (pagination: TablePaginationConfig) => {
     setPagination(pagination)
     const query = form.getFieldsValue()
-    getFilmList({
+    const res = await getFilmList({
       current: pagination.current,
       pageSize: pagination.pageSize,
       ...query
-    })
+    });
+    setData(res.data);
   }
 
   const handleFilmDelete = async (id: string) => {
@@ -212,9 +213,10 @@ export default function Home() {
   
   <div className={styles.tableWrap}>
     <Table
-     dataSource={data} 
-     columns={columns} 
-     scroll={{x: 1000 }} 
+     size="large"
+     rowKey="_id"
+     dataSource={data}
+     columns={columns}
      onChange={handleTableChange} 
      pagination={{ ...pagination, showTotal: () => `Total ${pagination.total} item` }}
      />
