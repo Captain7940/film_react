@@ -1,14 +1,9 @@
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import { DownOutlined } from "@ant-design/icons";
 import { MenuProps, message, Space } from "antd";
 import { Layout as AntdLayout, Breadcrumb, Dropdown, Menu } from "antd";
 import Head from "next/head";
 import router, { useRouter } from "next/router";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import Link from "next/link";
 import { logout } from "@/api/user";
@@ -36,16 +31,7 @@ const ITEMS = [
       { label: "Add Borrow", key: "/borrow/add" },
     ],
   },
-  {
-    // icon: React.createElement(icon),
-    label: "Category Manage",
-    key: "category",
 
-    children: [
-      { label: "Category List", key: "/category" },
-      { label: "Add Category", key: "/category/add" },
-    ],
-  },
   {
     // icon: React.createElement(icon),
     label: "User Manage",
@@ -69,6 +55,7 @@ const USER_ITEMS: MenuProps["items"] = [
         onClick={async () => {
           await logout();
           message.success("Successfully Logout");
+          localStorage.removeItem("user");
           router.push("/login");
         }}
       >
@@ -82,6 +69,7 @@ const USER_ITEMS: MenuProps["items"] = [
 // export function Layout({ children }: { children: ReactNode }) {
   export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
+    const [user, setUser] = useState({ info: { nickName: "" } });
     const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
       router.push(key);
     };
@@ -89,6 +77,15 @@ const USER_ITEMS: MenuProps["items"] = [
 
   const activeMenu = router.pathname;
  
+  useEffect(() => {
+    if(typeof window !== "undefined") {
+      const userStorage = (localStorage?.getItem("user"))
+      if(userStorage) {
+        setUser(JSON.parse(userStorage));
+      }
+    }
+  },[])
+  
 
   return (
     <>
@@ -106,7 +103,7 @@ const USER_ITEMS: MenuProps["items"] = [
               <Dropdown menu={{ items: USER_ITEMS }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    UserName
+                    {user?.info?.nickName ? user?.info?.nickName : "UserName"}
                     <DownOutlined />
                   </Space>
                 </a>

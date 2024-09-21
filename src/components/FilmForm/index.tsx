@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 import { CategoryType, FilmType } from "@/type";
 import { filmAdd, filmUpdate } from "@/api/film";
 import Content from "@/components/Content";
-import { getCategoryList } from "@/api/category";
+// import { getCategoryList } from "@/api/category";
 
 
 const { TextArea } = Input;
@@ -13,7 +13,7 @@ const { TextArea } = Input;
 export default function FilmForm({ title, data }: { title: string ,data: FilmType}) {
   const [preview, setPreview] = useState("");
   const [form] = Form.useForm();
-  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  // const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,9 +37,9 @@ export default function FilmForm({ title, data }: { title: string ,data: FilmTyp
   };
 
   useEffect(() => {
-    getCategoryList({ all: true }).then((res) => {
-      setCategoryList(res.data);
-    });
+    // getCategoryList({ all: true }).then((res) => {
+    //   setCategoryList(res.data);
+    // });
   }, []);
 
   return (
@@ -76,21 +76,26 @@ export default function FilmForm({ title, data }: { title: string ,data: FilmTyp
           <Input placeholder="Please Enter" />
         </Form.Item>
         <Form.Item
-          label="Category"
+          label="Status"
           name="category"
           rules={[
             {
               required: true,
-              message: "Please Select Category",
+              message: "Please Select Status",
             },
           ]}
         >
           <Select
             placeholder="Please Select"
-            options={categoryList.map((item) => ({
-              label: item.name,
-              value: item._id,
-            }))}
+            options={[
+              { label: <span style={{ color: "green" }}>Available</span>, value: "available" },
+              { label: <span style={{ color: "orange" }}>Pending</span>, value: "pending" },
+              { label: <span style={{ color: "red" }}>Offline</span>, value: "offline" },
+            ]}
+            // options={categoryList.map((item) => ({
+            //   label: item.name,
+            //   value: item._id,
+            // }))}
           ></Select>
         </Form.Item>
         <Form.Item label="Cover Page" name="cover">

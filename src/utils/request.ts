@@ -34,6 +34,9 @@ export const CreateAxiosInstance = (
 
   instance.interceptors.request.use(
     function (config) {
+      const userStorage = localStorage.getItem('user')
+      const token = userStorage ? JSON.parse(userStorage).token : "";
+      config.headers['Authorization'] = 'Bearer ' + token;
       return config;
     },
     function (error) {

@@ -5,8 +5,8 @@ import styles from './index.module.css'
 import { filmDelete, getFilmList } from "../../api/film";
 import { FilmQueryType } from "@/type/film";
 import Content from "@/components/Content";
-import { getCategoryList } from "@/api/category";
-import { CategoryType } from "@/type/category";
+// import { getCategoryList } from "@/api/category";
+// import { CategoryType } from "@/type/category";
 
 
 const COLUMNS = [
@@ -39,7 +39,7 @@ const COLUMNS = [
     title: 'Category',
     dataIndex: 'category',
     key: 'category',
-    width: 80
+    width: 100
   },
   {
     title: 'Description',
@@ -60,7 +60,7 @@ export default function Film() {
   const [form] = Form.useForm()
   const router = useRouter()
   const [data, setData] = useState([])
-  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  // const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 20,
@@ -81,10 +81,10 @@ export default function Film() {
 
   useEffect(() => {
     fetchData();
-    getCategoryList({ all: true }).then((res) => {
-      setCategoryList(res.data);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // getCategoryList({ all: true }).then((res) => {
+    //   setCategoryList(res.data);
+    // });
+
   }, []);
   
   const handleSearchFinish = async (values: FilmQueryType) => {
@@ -184,15 +184,16 @@ export default function Film() {
         </Form.Item>
       </Col>
       <Col span={5}>
-        <Form.Item name="category" label="Category" >
+        <Form.Item name="category" label="Status" >
           <Select
             allowClear
             showSearch
             placeholder="Please Select"
-            options={categoryList.map((item) => ({
-              label: item.name,
-              value: item._id,
-            }))}
+            options={[
+              { label: <span style={{ color: "green" }}>Available</span>, value: "available" },
+              { label: <span style={{ color: "orange" }}>Pending</span>, value: "pending" },
+              { label: <span style={{ color: "red" }}>Offline</span>, value: "offline" },
+            ]}
           />
         </Form.Item>
       </Col>

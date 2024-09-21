@@ -1,5 +1,5 @@
-import FilmForm from "@/components/UserForm";
+import UserForm from "@/components/UserForm";
 
 export default function Home() {
-  return <FilmForm title="Add User" />;
+  return <UserForm title="Add User" />;
 }

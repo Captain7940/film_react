@@ -10,6 +10,9 @@ export default function Home() {
     // {data:{id:xx,name:xxx}}
     if (res.success) {
       message.success("Successfully Login");
+
+      localStorage.setItem("user", JSON.stringify({info: res.data, token: res.token}));
+
       router.push("/film");
     }
   };

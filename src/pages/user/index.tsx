@@ -1,10 +1,9 @@
 import Content from "@/components/Content";
-import { CategoryQueryType } from "@/type";
+import { CategoryQueryType, UserType } from "@/type";
 import {
   Button,
   Col,
   Form,
-  Image,
   Input,
   Modal,
   Row,
@@ -17,13 +16,12 @@ import {
 } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
 import styles from "./index.module.css";
 import { getUserList, userDelete, userUpdate } from "@/api/user";
 
-const STATUS = {
-  ON: "on",
-  OFF: "off",
+enum STATUS {
+  ON = "on",
+  OFF = "off",
 };
 
 export const STATUS_OPTIONS = [
@@ -127,12 +125,12 @@ export default function User() {
     });
   };
 
-  const handleStatusChange = async (row) => {
+  const handleStatusChange = async (row: UserType) => {
     const status = row.status === STATUS.ON ? STATUS.OFF : STATUS.ON;
 
-    await userUpdate({
+    await userUpdate(row._id!, {
       ...row,
-      status,
+      status: status as STATUS,
     });
     fetchData(form.getFieldsValue());
   };

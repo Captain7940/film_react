@@ -1,4 +1,4 @@
-import { UserType } from "@/types";
+import { UserType } from "@/type/user";
 import { useEffect, useState } from "react";
 
 export const useCurrentUser = () => {

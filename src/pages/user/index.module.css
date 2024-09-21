@@ -1,3 +1,7 @@
+.form {
+  margin-bottom: 24px;
+}
+
 .tableWrap {
   overflow: auto;
   height: calc(100% - 80px);

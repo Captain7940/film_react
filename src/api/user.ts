@@ -18,8 +18,8 @@ export async function userDelete(id: string) {
   return request.delete(`/api/users/${id}`);
 }
 
-export async function userUpdate(params: UserType) {
-  return request.put(`/api/users`, params);
+export async function userUpdate(id: string, params: UserType) {
+  return request.put(`/api/users/${id}`, params);
 }
 
 export async function login(params: Pick<UserType, "name" | "password">) {

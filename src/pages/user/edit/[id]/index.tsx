@@ -15,5 +15,5 @@ export default function Home() {
       });
     }
   }, [id]);
-  return <UserForm title="图书编辑" editData={data} />;
+  return <UserForm title="Edit User" editData={data} />;
 }

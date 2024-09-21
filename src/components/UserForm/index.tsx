@@ -1,12 +1,11 @@
 import { filmAdd } from "@/api/film";
-import { getCategoryList } from "@/api/category";
+// import { getCategoryList } from "@/api/category";
 import { userAdd, userUpdate } from "@/api/user";
 import { USER_ROLE, USER_SEX, USER_STATUS } from "@/constant/user";
 import { FilmType, CategoryType, UserType } from "@/type";
 import {
   Button,
   Form,
-  Image,
   Input,
   InputNumber,
   Radio,
@@ -15,7 +14,6 @@ import {
 } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-
 import Content from "../Content";
 import styles from "./index.module.css";
 
@@ -32,7 +30,7 @@ export default function UserForm({
 }) {
   const [preview, setPreview] = useState("");
   const [form] = Form.useForm();
-  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+  // const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,18 +41,19 @@ export default function UserForm({
 
   const handleFinish = async (values: UserType) => {
     if (editData?._id) {
-      await userUpdate(values);
+      await userUpdate(editData._id, values);
+      message.success("Successfully Edit");
     } else {
       await userAdd(values);
+      message.success("Successfully Create");
     }
-    message.success("Successfully Create");
     router.push("/user");
   };
 
   useEffect(() => {
-    getCategoryList({ all: true }).then((res) => {
-      setCategoryList(res.data);
-    });
+    // getCategoryList({ all: true }).then((res) => {
+    //   setCategoryList(res.data);
+    // });
   }, []);
 
   return (
@@ -128,7 +127,7 @@ export default function UserForm({
             htmlType="submit"
             className={styles.btn}
           >
-            Create
+            {editData?._id ? "Update" : "Create"}
           </Button>
         </Form.Item>
       </Form>
