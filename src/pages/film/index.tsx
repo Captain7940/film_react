@@ -1,4 +1,4 @@
-import { Button, Col, Image, Form, Input, Select, Space, Table, TablePaginationConfig, Tooltip, Row, message } from "antd";
+import { Button, Col, Image, Form, Input, Select, Space, Table, TablePaginationConfig, Tooltip, Row, message, Tag } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from './index.module.css'
@@ -23,7 +23,7 @@ const COLUMNS = [
     width: 120,
     render: (text: string) => {
       return <Image
-        width={50}
+        width={100}
         src={text}
         alt=""
       />
@@ -36,10 +36,27 @@ const COLUMNS = [
     width: 120
   },
   {
-    title: 'Category',
+    title: 'Status',
     dataIndex: 'category',
     key: 'category',
-    width: 100
+    width: 100,
+    render: (text: string) => {
+      let color;
+      switch (text) {
+        case 'pending':
+          color = 'orange';
+          break;
+        case 'available':
+          color = 'green';
+          break;
+        case 'offline':
+          color = 'red';
+          break;
+        default:
+          color = 'white';
+      }
+      return <Tag color={color}>{text}</Tag>;
+    },
   },
   {
     title: 'Description',

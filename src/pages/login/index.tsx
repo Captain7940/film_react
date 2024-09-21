@@ -10,10 +10,13 @@ export default function Home() {
     // {data:{id:xx,name:xxx}}
     if (res.success) {
       message.success("Successfully Login");
-
       localStorage.setItem("user", JSON.stringify({info: res.data, token: res.token}));
-
-      router.push("/film");
+      // Route based on user role
+      if (res.data.role === 'admin') {
+        router.push("/film");
+      } else if (res.data.role === 'user') {
+        router.push("/borrow");
+      }
     }
   };
 

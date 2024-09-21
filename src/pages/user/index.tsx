@@ -25,8 +25,8 @@ enum STATUS {
 };
 
 export const STATUS_OPTIONS = [
-  { label: "正常", value: STATUS.ON },
-  { label: "禁用", value: STATUS.OFF },
+  { label: "Normal", value: STATUS.ON },
+  { label: "Disable", value: STATUS.OFF },
 ];
 
 const COLUMNS = [
@@ -43,19 +43,18 @@ const COLUMNS = [
     width: 120,
   },
   {
-    title: "状态",
+    title: "Status",
     dataIndex: "status",
     key: "status",
     width: 120,
     render: (text: string) => {
       return text === STATUS.ON ? (
-        <Tag color="green">正常</Tag>
+        <Tag color="green">Normal</Tag>
       ) : (
-        <Tag color="red">禁用</Tag>
+        <Tag color="red">Disable</Tag>
       );
     },
   },
-
 ];
 
 export default function User() {
@@ -158,7 +157,7 @@ export default function User() {
                 handleStatusChange(row);
               }}
             >
-              {row.status === STATUS.ON ? "禁用" : "启用"}
+              {row.status === STATUS.ON ? "Disable" : "Enable"}
             </Button>
             <Button
               type="link"

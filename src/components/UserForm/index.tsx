@@ -110,11 +110,11 @@ export default function UserForm({
         </Form.Item>
         <Form.Item label="Status" name="status">
           <Radio.Group>
-            <Radio value="on">启用</Radio>
-            <Radio value="off">禁用</Radio>
+            <Radio value="on">Enable</Radio>
+            <Radio value="off">Diable</Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item label="角色" name="role">
+        <Form.Item label="Role" name="role">
           <Radio.Group>
             <Radio value="user">User</Radio>
             <Radio value="admin">Admin</Radio>

@@ -31,8 +31,6 @@ export default function FilmForm({ title, data }: { title: string ,data: FilmTyp
       await filmAdd(values);
       message.success("Successfully Create");
     }
-    await filmAdd(values);
-    message.success("Create Success");
     router.push("/film");
   };
 
