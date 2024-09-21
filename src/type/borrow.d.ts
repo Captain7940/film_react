@@ -1,4 +1,4 @@
-import { BookType } from "./book";
+import { FilmType } from "./film";
 
 export interface BorrowQueryType {
   name?: string;
@@ -9,9 +9,7 @@ export interface BorrowQueryType {
 }
 
 export interface BorrowType {
-  book: BookType;
-  borrowAt: number;
-  backAt: number;
+  film: FilmType;
   // todo user ts
   user: any;
 }

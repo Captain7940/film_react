@@ -5,9 +5,6 @@ import styles from './index.module.css'
 import { filmDelete, getFilmList } from "../../api/film";
 import { FilmQueryType } from "@/type/film";
 import Content from "@/components/Content";
-// import { getCategoryList } from "@/api/category";
-// import { CategoryType } from "@/type/category";
-
 
 const COLUMNS = [
   {
@@ -77,7 +74,6 @@ export default function Film() {
   const [form] = Form.useForm()
   const router = useRouter()
   const [data, setData] = useState([])
-  // const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 20,
@@ -98,9 +94,6 @@ export default function Film() {
 
   useEffect(() => {
     fetchData();
-    // getCategoryList({ all: true }).then((res) => {
-    //   setCategoryList(res.data);
-    // });
 
   }, []);
   

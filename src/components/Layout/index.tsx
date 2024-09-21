@@ -21,16 +21,15 @@ const ITEMS = [
       { label: "Add Film", key: "/film/add" },
     ],
   },
-  {
-    // icon: React.createElement(icon),
-    label: "Borrow Manage",
-    key: "borrow",
+  // {
+  //   label: "Borrow Manage",
+  //   key: "borrow",
 
-    children: [
-      { label: "Borrow List", key: "/borrow" },
-      { label: "Add Borrow", key: "/borrow/add" },
-    ],
-  },
+  //   children: [
+  //     { label: "Borrow List", key: "/borrow" },
+  //     { label: "Add Borrow", key: "/borrow/add" },
+  //   ],
+  // },
 
   {
     // icon: React.createElement(icon),

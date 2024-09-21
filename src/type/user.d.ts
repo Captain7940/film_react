@@ -38,3 +38,9 @@ export interface UserFormProps {
   editData?: UserType;
 }
 
+export interface RentUser {
+  info: {
+    username: string;
+  };
+  token: string
+}

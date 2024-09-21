@@ -15,3 +15,12 @@ export interface FilmType {
   description: string;
   _id?: string;
 }
+
+interface RentFilm {
+  _id: string;
+  name: string;
+  author: string;
+  category: string;
+  cover: string;
+  description: string;
+}
